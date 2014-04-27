@@ -33,20 +33,19 @@ std::istream& operator>>(std::istream& str, CSVRow& data) {
 
 CSVReader::CSVReader(const std::string& filepath)
     : has_next_(true), file_(filepath) {
-  // CHECK(file_);
-  // CHECK(file_.is_open());
+  CHECK(file_);
+  CHECK(file_.is_open());
 }
 
 CSVReader::~CSVReader() {}
 
 const CSVRow& CSVReader::Get() const {
-  // CHECK(has_next_);
+  CHECK(has_next_);
   return row_;
 }
 
 bool CSVReader::Next() {
   if (has_next_) {
-    // // LOG(INFO) << "reading row";
     has_next_ = file_ >> row_;
   }
   return has_next_;
@@ -61,7 +60,7 @@ CSVReaderWithLimits::CSVReaderWithLimits(const std::string& filepath,
       limit_rows_(limit_rows > 0 ? skip_rows + limit_rows
                                  : std::numeric_limits<uint>::max()),
       current_row_(0) {
-  // LOG(INFO) << skip_rows_ << ", num_rows:" << limit_rows_;
+//  LOG(INFO) << skip_rows_ << ", num_rows:" << limit_rows_;
 }
 
 bool CSVReaderWithLimits::Next() {

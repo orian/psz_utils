@@ -37,7 +37,7 @@ MACRO(DEF_PSZ_LIB short_libname cc_files)
 
   INSTALL(TARGETS ${libname} DESTINATION ${LIB_INSTALL_DIR} )
   INSTALL(TARGETS ${libname}_static DESTINATION ${LIB_INSTALL_DIR} )
-ENDMACRO(FANN_TARGET cc_file libname)
+ENDMACRO(DEF_PSZ_LIB short_libname cc_files)
 
 #
 # csv
