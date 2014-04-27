@@ -1,0 +1,15 @@
+#define Tutorial_VERSION_MAJOR @Tutorial_VERSION_MAJOR@
+#define Tutorial_VERSION_MINOR @Tutorial_VERSION_MINOR@
+
+#indef VERSION_H_
+#define VERSION_H_
+
+namespace psz {
+
+constexpr int VERSION = @VERSION_MAJOR@;
+const char* const VERSION_STR = "@VERSION_MAJOR@";
+const char* const VERSION_FULL_STR = "Utils v.@VERSION_MAJOR@";
+
+}
+
+#endif VERSION_H_
