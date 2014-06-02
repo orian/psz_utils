@@ -55,7 +55,7 @@ typedef basic_onullstream<wchar_t> wonullstream;
 #define ERROR error
 #define FATAL fatal
 
-#define LOG(lvl) BOOST_LOG_TRIVIAL(lvl)
+#define LOG(lvl) BOOST_LOG_TRIVIAL(lvl) << __FILE__ << ':' << __LINE__ << ": "
 
 #define LOG_IF(lvl, condition) \
   if (condition) LOG(lvl)
@@ -64,13 +64,15 @@ typedef basic_onullstream<wchar_t> wonullstream;
 // CHECKs mimicing Google Logging
 ///////////////////////////////////////////////////////////////////////////////
 
-//#define CHECK(condition) \
-//  LOG_IF(FATAL, !(condition)) << "Check failed: " #condition " "
-#define CHECK(condition)                           \
-  if (!condition) {                                \
-    LOG(FATAL) << "Check failed: " #condition " "; \
-    exit(EXIT_FAILURE);                            \
-  }
+
+// #define CHECK(condition)                           \
+//   if (!condition) {                                \
+//     LOG(FATAL) << "Check failed: " #condition " "; \
+//     exit(EXIT_FAILURE);                            \
+//   }
+
+#define CHECK(condition) \
+  LOG_IF(FATAL, !(condition)) << "Check failed: " #condition " "
 
 // A helper class for formatting "expr (V1 vs. V2)" in a CHECK_XX
 // statement.  See MakeCheckOpString for sample usage.  Other
