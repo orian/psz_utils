@@ -18,7 +18,7 @@ INSTALL(FILES ${HDRS_ALL} DESTINATION include/psz/)
 SET (LIB_INSTALL_DIR lib)
 
 MACRO(DEF_PSZ_LIB short_libname cc_files)
-  SET(libname "psz_${short_libname}")
+  SET(libname "${short_libname}")
   MESSAGE(STATUS lib_${libname})
   ADD_LIBRARY(${libname} SHARED ${cc_files})
   SET_TARGET_PROPERTIES(${libname} PROPERTIES COMPILE_FLAGS -DBOOST_LOG_DYN_LINK)
@@ -39,20 +39,16 @@ MACRO(DEF_PSZ_LIB short_libname cc_files)
   INSTALL(TARGETS ${libname}_static DESTINATION ${LIB_INSTALL_DIR} )
 ENDMACRO(DEF_PSZ_LIB short_libname cc_files)
 
-#
-# csv
-#
-DEF_PSZ_LIB(csv csv.cc)
 
-#
-# string_split
-#
-DEF_PSZ_LIB(string_split string_split.cc)
+DEF_PSZ_LIB(psz_clock clock.cc)
+DEF_PSZ_LIB(psz_counters counters.cc)
+DEF_PSZ_LIB(psz_csv csv.cc)
+DEF_PSZ_LIB(psz_log_wrapper log_wrapper.cc)
+DEF_PSZ_LIB(psz_string string_split.cc)
+DEF_PSZ_LIB(psz_string_split string_split.cc)
 
-#
-# All string utils
-#
-DEF_PSZ_LIB("string" string_split.cc)
+SET(PSZ_ALL clock.cc csv.cc counters.cc log_wrapper.cc string_split.cc)
+DEF_PSZ_LIB(psz ${PSZ_ALL})
 
 #install(TARGETS psz_csv psz_csv_static
 #        RUNTIME DESTINATION bin
