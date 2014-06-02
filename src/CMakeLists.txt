@@ -10,7 +10,7 @@ CONFIGURE_FILE(
 # so that we will find TutorialConfig.h
 #include_directories("${HDRS_DIR}")
 
-SET(HDRS_CPY csv.h log_wrapper.h macros.h string.h string_split.h string_join.h time.h vector.h)
+SET(HDRS_CPY clock.h counters.h csv.h log_wrapper.h macros.h string.h string_split.h string_join.h time.h vector.h)
 FILE(COPY ${HDRS_CPY} DESTINATION ${HDRS_DIR})
 SET(HDRS_ALL ${HDRS_CPY} "${HDRS_DIR}/version.h")
 INSTALL(FILES ${HDRS_ALL} DESTINATION include/psz/)

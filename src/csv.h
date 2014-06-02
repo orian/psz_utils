@@ -1,5 +1,5 @@
-#ifndef __CSV_H
-#define __CSV_H
+#ifndef __PSZ_CSV_H
+#define __PSZ_CSV_H
 
 #include "macros.h"
 
@@ -64,4 +64,4 @@ std::unique_ptr<CsvReader> CsvFactory(const std::string& path,
 
 }  // namespace psz
 
-#endif  // __CSV_H
+#endif  // __PSZ_CSV_H

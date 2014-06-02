@@ -1,5 +1,5 @@
-#ifndef __COUNTERS_H
-#define __COUNTERS_H
+#ifndef __PSZ_COUNTERS_H
+#define __PSZ_COUNTERS_H
 
 #include <cmath>
 #include <map>
@@ -46,4 +46,4 @@ std::string FindBucket(double min_val, double max_val, unsigned int num_buckets,
 
 }  // namespace
 
-#endif  // __COUNTERS_H
+#endif  // __PSZ_COUNTERS_H

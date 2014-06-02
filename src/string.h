@@ -1,7 +1,7 @@
-#ifndef __STRING_H
-#define __STRING_H
+#ifndef __PSZ_STRING_H
+#define __PSZ_STRING_H
 
 #include "string_join.h"
 #include "string_split.h"
 
-#endif  // __STRING_H
+#endif  // __PSZ_STRING_H

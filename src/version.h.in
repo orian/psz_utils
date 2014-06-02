@@ -1,8 +1,8 @@
 #define Tutorial_VERSION_MAJOR @Tutorial_VERSION_MAJOR@
 #define Tutorial_VERSION_MINOR @Tutorial_VERSION_MINOR@
 
-#indef VERSION_H_
-#define VERSION_H_
+#indef __PSZ_VERSION_H
+#define __PSZ_VERSION_H
 
 namespace psz {
 
@@ -12,4 +12,4 @@ const char* const VERSION_FULL_STR = "Utils v.@VERSION_MAJOR@";
 
 }
 
-#endif VERSION_H_
+#endif  // __PSZ_VERSION_H

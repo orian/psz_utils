@@ -1,5 +1,5 @@
-#ifndef __CLOCK_H
-#define __CLOCK_H
+#ifndef __PSZ_CLOCK_H
+#define __PSZ_CLOCK_H
 
 #include <ctime>
 
@@ -21,4 +21,4 @@ class Clock {
 
 }  // namespace psz
 
-#endif  //__CLOCK_H
+#endif  //__PSZ_CLOCK_H

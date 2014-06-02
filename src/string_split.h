@@ -1,5 +1,5 @@
-#ifndef __STRING_SPLIT_H
-#define __STRING_SPLIT_H
+#ifndef __PSZ_STRING_SPLIT_H
+#define __PSZ_STRING_SPLIT_H
 
 #include <string>
 #include <vector>
@@ -15,4 +15,4 @@ std::vector<unsigned int> SplitStringAndParse(const std::string& str,
 
 }  // namespace psz
 
-#endif  // __STRING_SPLIT_H
+#endif  // __PSZ_STRING_SPLIT_H

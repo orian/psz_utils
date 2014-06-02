@@ -1,5 +1,5 @@
-#ifndef __MACROS_H
-#define __MACROS_H
+#ifndef __PSZ_MACROS_H
+#define __PSZ_MACROS_H
 
 #if __cplusplus > 199711L
 #define __cplusplus11
@@ -33,4 +33,4 @@ using int32 = signed int;
 #define int32 signed int
 #endif
 
-#endif  // __MACROS_H
+#endif  // __PSZ_MACROS_H

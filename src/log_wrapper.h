@@ -1,5 +1,5 @@
-#ifndef __LOG_WRAPPER_H
-#define __LOG_WRAPPER_H
+#ifndef __PSZ_LOG_WRAPPER_H
+#define __PSZ_LOG_WRAPPER_H
 
 #include <boost/log/trivial.hpp>
 #include <cstdlib>
@@ -236,4 +236,4 @@ inline unsigned long long GetReferenceableValue(unsigned long long t) {
 
 //#undef CHECK_OP
 
-#endif  // __LOG_WRAPPER_H
+#endif  // __PSZ_LOG_WRAPPER_H

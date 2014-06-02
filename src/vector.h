@@ -1,5 +1,5 @@
-#ifndef PSZ_VECTOR_H__
-#define PSZ_VECTOR_H__
+#ifndef __PSZ_VECTOR_H
+#define __PSZ_VECTOR_H
 
 #include <ostream>
 #include <vector>
@@ -23,4 +23,4 @@ std::ostream& operator<<(std::ostream& ostr, const std::vector<T>& vec) {
   return ostr;
 }
 
-#endif  // PSZ_VECTOR_H__
+#endif  // __PSZ_VECTOR_H
