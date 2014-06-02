@@ -66,10 +66,10 @@ typedef basic_onullstream<wchar_t> wonullstream;
 
 //#define CHECK(condition) \
 //  LOG_IF(FATAL, !(condition)) << "Check failed: " #condition " "
-#define CHECK(condition)                                              \
-  if (!condition) {                                                   \
-    LOG(FATAL) << "Check failed: " #condition " ";                    \
-    exit(EXIT_FAILURE);                                               \
+#define CHECK(condition)                           \
+  if (!condition) {                                \
+    LOG(FATAL) << "Check failed: " #condition " "; \
+    exit(EXIT_FAILURE);                            \
   }
 
 // A helper class for formatting "expr (V1 vs. V2)" in a CHECK_XX

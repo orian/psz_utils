@@ -4,66 +4,81 @@
 
 #include <limits>
 
-namespace utils {
+namespace psz {
 
-std::string const& CSVRow::operator[](std::size_t index) const {
-  // CHECK_LT(index, m_data.size());
-  return m_data[index];
+CsvRow::CsvRow() : scanned_(0) {}
+
+std::string const& CsvRow::operator[](std::size_t index) const {
+  CHECK_LT(index, scanned_);
+  return m_data_[index];
 }
 
-std::size_t CSVRow::size() const { return m_data.size(); }
+std::size_t CsvRow::size() const { return scanned_; }
 
-void CSVRow::readNextRow(std::istream& str) {
+void CsvRow::readNextRow(std::istream& str) {
+  scanned_ = 0;
   std::string line;
   std::getline(str, line);
 
   std::stringstream lineStream(line);
   std::string cell;
 
-  m_data.clear();
-  while (std::getline(lineStream, cell, ',')) {
-    m_data.push_back(cell);
+  //  m_data_.clear();
+  std::vector<std::string>::iterator iter = m_data_.begin();
+  std::vector<std::string>::iterator end_iter = m_data_.end();
+  while (iter != end_iter && std::getline(lineStream, cell, ',')) {
+    *iter = cell;
+    ++scanned_;
+    ++iter;
   }
+  if (iter == end_iter) {
+    while (std::getline(lineStream, cell, ',')) {
+      ++scanned_;
+      m_data_.push_back(cell);
+    }
+  }
+  // Assuming scanned_ should be the same for all rows, resize is not needed.
+  // m_data_.resize(scanned_);
 }
 
-std::istream& operator>>(std::istream& str, CSVRow& data) {
+std::istream& operator>>(std::istream& str, CsvRow& data) {
   data.readNextRow(str);
   return str;
 }
 
-CSVReader::CSVReader(const std::string& filepath)
+CsvReader::CsvReader(const std::string& filepath)
     : has_next_(true), file_(filepath) {
   CHECK(file_);
   CHECK(file_.is_open());
 }
 
-CSVReader::~CSVReader() {}
+CsvReader::~CsvReader() { file_.close(); }
 
-const CSVRow& CSVReader::Get() const {
+const CsvRow& CsvReader::Get() const {
   CHECK(has_next_);
   return row_;
 }
 
-bool CSVReader::Next() {
+bool CsvReader::Next() {
   if (has_next_) {
     has_next_ = file_ >> row_;
   }
   return has_next_;
 }
 
-bool CSVReader::End() const { return !has_next_; }
+bool CsvReader::End() const { return !has_next_; }
 
-CSVReaderWithLimits::CSVReaderWithLimits(const std::string& filepath,
+CsvReaderWithLimits::CsvReaderWithLimits(const std::string& filepath,
                                          uint skip_rows, uint limit_rows)
-    : CSVReader(filepath),
+    : CsvReader(filepath),
       skip_rows_(skip_rows),
       limit_rows_(limit_rows > 0 ? skip_rows + limit_rows
                                  : std::numeric_limits<uint>::max()),
       current_row_(0) {
-//  LOG(INFO) << skip_rows_ << ", num_rows:" << limit_rows_;
+  //  LOG(INFO) << skip_rows_ << ", num_rows:" << limit_rows_;
 }
 
-bool CSVReaderWithLimits::Next() {
+bool CsvReaderWithLimits::Next() {
   if (current_row_ >= limit_rows_) {
     return false;
   }
@@ -71,28 +86,28 @@ bool CSVReaderWithLimits::Next() {
     // // // LOG_EVERY_N(INFO, 50000)
     // << "skipping rows: " << std::min(skip_rows_, current_row_ + 50000)
     // << " of " << skip_rows_ << " to skip.";
-    if (!CSVReader::Next()) {
+    if (!CsvReader::Next()) {
       return false;
     }
     ++current_row_;
   }
   ++current_row_;
-  return CSVReader::Next();
+  return CsvReader::Next();
 }
 
-bool CSVReaderWithLimits::End() const {
-  return CSVReader::End() || current_row_ >= limit_rows_;
+bool CsvReaderWithLimits::End() const {
+  return CsvReader::End() || current_row_ >= limit_rows_;
 }
 
-std::unique_ptr<CSVReader> CSVFactory(const std::string& path,
+std::unique_ptr<CsvReader> CsvFactory(const std::string& path,
                                       const uint skip_rows,
                                       const uint limit_rows) {
   if (skip_rows > 0 || limit_rows > 0) {
-    return std::unique_ptr<CSVReader>(
-        new CSVReaderWithLimits(path, skip_rows, limit_rows));
+    return std::unique_ptr<CsvReader>(
+        new CsvReaderWithLimits(path, skip_rows, limit_rows));
   } else {
-    return std::unique_ptr<CSVReader>(new CSVReader(path));
+    return std::unique_ptr<CsvReader>(new CsvReader(path));
   }
 }
 
-}  // namespace utils
+}  // namespace psz

@@ -11,39 +11,41 @@
 #include <string>
 #include <vector>
 
-namespace utils {
+namespace psz {
 
-class CSVRow {
+class CsvRow {
  public:
+  CsvRow();
   std::string const& operator[](std::size_t index) const;
   std::size_t size() const;
   void readNextRow(std::istream& str);
 
  private:
-  std::vector<std::string> m_data;
+  std::vector<std::string> m_data_;
+  uint scanned_;
 };
 
-std::istream& operator>>(std::istream& str, CSVRow& data);
+std::istream& operator>>(std::istream& str, CsvRow& data);
 
-class CSVReader {
+class CsvReader {
  public:
-  explicit CSVReader(const std::string& filepath);
-  virtual ~CSVReader();
-  virtual const CSVRow& Get() const;
+  explicit CsvReader(const std::string& filepath);
+  virtual ~CsvReader();
+  virtual const CsvRow& Get() const;
   virtual bool Next();
   virtual bool End() const;
 
  private:
   bool has_next_;
   std::ifstream file_;
-  CSVRow row_;
+  CsvRow row_;
 
-  DISALLOW_COPY_AND_ASSIGN(CSVReader);
+  DISALLOW_COPY_AND_ASSIGN(CsvReader);
 };
 
-class CSVReaderWithLimits : public CSVReader {
+class CsvReaderWithLimits : public CsvReader {
  public:
-  explicit CSVReaderWithLimits(const std::string& filepath, uint skip_rows,
+  explicit CsvReaderWithLimits(const std::string& filepath, uint skip_rows,
                                uint limit_rows);
   virtual bool Next();
   virtual bool End() const;
@@ -53,13 +55,13 @@ class CSVReaderWithLimits : public CSVReader {
   const uint limit_rows_;
   uint current_row_;
 
-  DISALLOW_COPY_AND_ASSIGN(CSVReaderWithLimits);
+  DISALLOW_COPY_AND_ASSIGN(CsvReaderWithLimits);
 };
 
-std::unique_ptr<CSVReader> CSVFactory(const std::string& path,
+std::unique_ptr<CsvReader> CsvFactory(const std::string& path,
                                       const uint skip_rows,
                                       const uint limit_rows);
 
-}  // namespace utils
+}  // namespace psz
 
 #endif  // __CSV_H
