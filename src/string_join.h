@@ -1,6 +1,8 @@
 #ifndef __STRING_JOIN_H
 #define __STRING_JOIN_H
 
+#include <sstream>
+
 template <typename T1>
 std::string StrCat(const T1& t1) {
   std::ostringstream str;
