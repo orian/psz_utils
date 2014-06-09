@@ -64,7 +64,6 @@ typedef basic_onullstream<wchar_t> wonullstream;
 // CHECKs mimicing Google Logging
 ///////////////////////////////////////////////////////////////////////////////
 
-
 // #define CHECK(condition)                           \
 //   if (!condition) {                                \
 //     LOG(FATAL) << "Check failed: " #condition " "; \
