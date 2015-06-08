@@ -17,13 +17,11 @@ class SpMeanCovariance {
 
   void Clear();
 
+  void Combine(const SpMeanCovariance &M);
+
   void Add(double *x);
 
-  void Combine(SpMeanCovariance &M);
-
-  void Add(double W_, double *T_, double *S_);
-
-  void Addw(double w, double *x);
+  void AddWithWeight(double w, double *x);
 
   double Mean(int i) const;
 
@@ -32,11 +30,15 @@ class SpMeanCovariance {
   double Covp(int i) const;
 
   double d() const;
+
   double d2() const;
+
   double w() const;
 
  private:
   void ResizeInternal(int d);
+  void Add(double other_w, const std::vector<double> &other_t,
+           const std::vector<double> &other_s);
 
   int d_;
   int d2_;
