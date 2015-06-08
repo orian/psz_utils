@@ -10,7 +10,9 @@ CONFIGURE_FILE(
 # so that we will find TutorialConfig.h
 #include_directories("${HDRS_DIR}")
 
-SET(HDRS_CPY clock.h counters.h csv.h log_wrapper.h macros.h string.h string_split.h string_join.h time.h vector.h)
+SET(HDRS_CPY clock.h counters.h csv.h log_wrapper.h macros.h string.h string_split.h string_join.h time.h
+    vector.h
+    mean_covariance.h)
 FILE(COPY ${HDRS_CPY} DESTINATION ${HDRS_DIR})
 SET(HDRS_ALL ${HDRS_CPY} "${HDRS_DIR}/version.h")
 INSTALL(FILES ${HDRS_ALL} DESTINATION include/psz/)
@@ -46,8 +48,9 @@ DEF_PSZ_LIB(psz_csv csv.cc)
 DEF_PSZ_LIB(psz_log_wrapper log_wrapper.cc)
 DEF_PSZ_LIB(psz_string string_split.cc)
 DEF_PSZ_LIB(psz_string_split string_split.cc)
+DEF_PSZ_LIB(psz_meancovariance mean_covariance.cc)
 
-SET(PSZ_ALL clock.cc csv.cc counters.cc log_wrapper.cc string_split.cc)
+SET(PSZ_ALL clock.cc csv.cc counters.cc log_wrapper.cc string_split.cc mean_variance.cc)
 DEF_PSZ_LIB(psz ${PSZ_ALL})
 
 #install(TARGETS psz_csv psz_csv_static
@@ -61,6 +64,10 @@ IF(CMAKE_BUILD_TYPE STREQUAL "Debug")
   find_package(GTest REQUIRED)
   include_directories(${GTEST_INCLUDE_DIRS})
 
-  add_executable(rbtree_test rbtree_test.cc)
-  target_link_libraries(rbtree_test ${GTEST_BOTH_LIBRARIES} glog gmock pthread)
+  #add_executable(rbtree_test rbtree_test.cc)
+  #target_link_libraries(rbtree_test ${GTEST_BOTH_LIBRARIES} glog gmock pthread)
+
+  add_executable(mean_covariance_test mean_covariance_test.cc)
+  target_link_libraries(mean_covariance_test psz_meancovariance gtest gtest_main pthread)
+
 ENDIF()
