@@ -8,7 +8,11 @@ std::vector<std::string> SplitString(const std::string& str,
   size_t prev = 0;
   size_t pos = str.find(sep);
   while (pos != std::string::npos) {
-    results.push_back(str.substr(prev, pos - prev));
+    // TODO optimize!
+    auto s = str.substr(prev, pos - prev);
+    if (!s.empty()) {
+      results.push_back(s);
+    }
     prev = pos + 1;
     pos = str.find(sep, prev);
   }
