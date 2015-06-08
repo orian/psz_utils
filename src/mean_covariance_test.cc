@@ -109,7 +109,7 @@ TEST(MeanCovariance, NumpyMultiVariables) {
   double ans_cov[] = {825., 1650., 3300., 2750., 5500., 9166.66666667};
   MeanCovariance m(1);
   for (int i = 1; i < 100; ++i) {
-      double v=i;
+    double v = i;
     double x[] = {v, v * 2 + 1, v / .3 - 5};
     m.Add(x);
   }

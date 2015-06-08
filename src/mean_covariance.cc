@@ -18,9 +18,7 @@ void MeanCovariance::Clear() {
   w_ = 0.;
 }
 
-void MeanCovariance::Combine(const MeanCovariance &M) {
-  Add(M.w_, M.t_, M.s_);
-}
+void MeanCovariance::Combine(const MeanCovariance &M) { Add(M.w_, M.t_, M.s_); }
 
 void MeanCovariance::Add(double *x) {
   if (w_ == 0.) {
@@ -103,7 +101,7 @@ void MeanCovariance::ResizeInternal(int d) {
 }
 
 void MeanCovariance::Add(double other_w, const std::vector<double> &other_t,
-                           const std::vector<double> &other_s) {
+                         const std::vector<double> &other_s) {
   if (w_ == 0.) {
     w_ = other_w;
     std::copy(other_t.begin(), other_t.end(), t_.begin());
