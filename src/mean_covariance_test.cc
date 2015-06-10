@@ -11,7 +11,7 @@ TEST(MeanCovariance, Simple) {
     double ans_mu = 6;
     double ans_var = 6.6;
 
-    MeanCovariance m(1);
+    psz::MeanCovariance m(1);
 
     int i = 0;
     for (i = 0; i < N; ++i) {
@@ -22,6 +22,23 @@ TEST(MeanCovariance, Simple) {
     auto ccov = m.Cov(0);
     EXPECT_LT(std::abs(ans_mu - cmu), 0.0001);
     EXPECT_LT(std::abs(ans_var - ccov), 0.0001);
+  }
+}
+
+TEST(MeanCovariance, Function) {
+  {
+    int N = 10;
+    double x[] = {4., 1., 9., 4., 9., 6., 8., 9., 5., 5.};
+    double ans_mu = 6;
+    double ans_var = 6.6;
+
+    std::vector<double> means,covs;
+    psz::MeanCovarianceF(1, 10, x, true, &means, &covs);
+
+    auto cmu = means[0];
+    auto ccov = covs[0];
+    EXPECT_FLOAT_EQ(ans_mu, cmu);
+    EXPECT_FLOAT_EQ(ans_var, ccov);
   }
 }
 
@@ -36,7 +53,7 @@ TEST(MeanCovariance, MultiVariable) {
 
   double ans_cov[] = {6.24, -3.94, 5.64, 1.14, -3.74, 6.84};
 
-  MeanCovariance m(3);
+  psz::MeanCovariance m(3);
   for (int i = 0; i < N; ++i) {
     m.AddWithWeight(1., &x[i * D]);
   }
@@ -60,8 +77,8 @@ TEST(MeanCovariance, Parallel) {
 
   double ans_cov[] = {6.24, -3.94, 5.64, 1.14, -3.74, 6.84};
 
-  MeanCovariance m(3);
-  MeanCovariance m2(3);
+  psz::MeanCovariance m(3);
+  psz::MeanCovariance m2(3);
   for (int i = 0; i < 6; ++i) {
     m.AddWithWeight(1., &x[i * D]);
   }
@@ -88,7 +105,7 @@ TEST(MeanCovariance, NumpySimple) {
    */
   double ans_mu = 50.;
   double ans_var = 816.666666;
-  MeanCovariance m(1);
+  psz::MeanCovariance m(1);
   for (int i = 1; i < 100; ++i) {
     double x = i;
     m.Add(&x);
@@ -107,7 +124,7 @@ TEST(MeanCovariance, NumpyMultiVariables) {
    */
   double ans_mu[] = {50., 101., 161.66666667};
   double ans_cov[] = {825., 1650., 3300., 2750., 5500., 9166.66666667};
-  MeanCovariance m(1);
+  psz::MeanCovariance m(1);
   for (int i = 1; i < 100; ++i) {
     double v = i;
     double x[] = {v, v * 2 + 1, v / .3 - 5};

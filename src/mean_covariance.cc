@@ -1,5 +1,10 @@
 #include "mean_covariance.h"
 
+#include <algorithm>
+#include <iostream>
+
+namespace psz {
+
 MeanCovariance::MeanCovariance() : d_(0), d2_(0), w_(0.) {}
 
 MeanCovariance::MeanCovariance(int d) : d_(d), d2_(0), w_(0.) {
@@ -20,7 +25,7 @@ void MeanCovariance::Clear() {
 
 void MeanCovariance::Combine(const MeanCovariance &M) { Add(M.w_, M.t_, M.s_); }
 
-void MeanCovariance::Add(double *x) {
+void MeanCovariance::Add(const double *x) {
   if (w_ == 0.) {
     w_ = 1.;
     for (int i = 0; i < d_; ++i) t_[i] = x[i];
@@ -33,7 +38,7 @@ void MeanCovariance::Add(double *x) {
   }
 
   auto s_iter = s_.begin();
-  double f = 1. / w_ / (w_ - 1.);
+  const double f = 1. / w_ / (w_ - 1.);
   for (int i = 0; i < d_; ++i) {
     dX_[i] = w_ * x[i] - t_[i];
   }
@@ -46,7 +51,29 @@ void MeanCovariance::Add(double *x) {
   }
 }
 
-void MeanCovariance::AddWithWeight(double w, double *x) {
+void MeanCovariance::AddBatch(int batch_size, const double *x) {
+  std::vector<double> means(d_, 0.);
+  std::vector<double> covs(d_, 0.);
+  KahanSum(x, &means[0], d_, batch_size);
+  std::transform(means.begin(), means.end(), means.begin(),
+                 [batch_size](double a) -> double { return a / batch_size; });
+  for (int i = 0; i < batch_size; ++i) {
+    int l = 0;
+    for (int j = 0; j < d_; ++j) {
+      for (int k = 0; k < j; ++k) {
+        covs[l] += (x[i * batch_size + j] - means[l]) *
+                   (x[i * batch_size + k] - means[k]);
+      }
+    }
+  }
+  std::transform(
+      covs.begin(), covs.end(), covs.begin(),
+      [batch_size](double a) -> double { return a / (batch_size - 1); });
+
+  // setting values
+}
+
+void MeanCovariance::AddWithWeight(double w, const double *x) {
   //--------------------------------
   // add( w, w*x, 0. );
   //--------------------------------
@@ -61,12 +88,12 @@ void MeanCovariance::AddWithWeight(double w, double *x) {
     dX_[i] = x[i] - t_[i] / w_;
   }
 
-  double *s_ptr = &s_[0];
+  auto s_iter = s_.begin();
   const double f = w_ * w / (w_ + w);
   for (int r = 0; r < d_; ++r) {
     for (int c = 0; c <= r; ++c) {
-      *s_ptr += f * dX_[r] * dX_[c];
-      ++s_ptr;
+      *s_iter += f * dX_[r] * dX_[c];
+      ++s_iter;
     }
   }
 
@@ -126,3 +153,5 @@ void MeanCovariance::Add(double other_w, const std::vector<double> &other_t,
   for (int i = 0; i < d_; ++i) t_[i] += other_t[i];
   w_ += other_w;
 }
+
+}  // namespace psz
