@@ -61,7 +61,8 @@ const CsvRow& CsvReader::Get() const {
 
 bool CsvReader::Next() {
   if (has_next_) {
-    has_next_ = file_ >> row_;
+    file_ >> row_;
+    has_next_ = !file_.fail();
   }
   return has_next_;
 }
