@@ -5,7 +5,9 @@
 
 namespace psz {
 
-bool EndsWith(std::string const &value, std::string const &ending);
+bool EndsWith(std::string const &value, std::string const &suffix);
+
+bool StartsWith(std::string const &value, std::string const &prefix);
 
 }  // namespace psz
 

@@ -2,8 +2,14 @@
 
 namespace psz {
 
-bool EndsWith(std::string const &value, std::string const &ending) {
-  return ending.size() <= value.size() && std::equal(ending.rbegin(), ending.rend(), value.rbegin());
+bool EndsWith(std::string const &value, std::string const &suffix) {
+  return suffix.size() <= value.size() &&
+         std::equal(suffix.rbegin(), suffix.rend(), value.rbegin());
+}
+
+bool StartsWith(std::string const &value, std::string const &prefix) {
+  return prefix.size() <= value.size() &&
+         std::equal(prefix.begin(), prefix.end(), value.begin());
 }
 
 }  // namespace psz
